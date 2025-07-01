@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/agent_front/static/css/main.ebba972d.css",
+    "main.js": "/agent_front/static/js/main.df8f4aa0.js",
+    "index.html": "/agent_front/index.html",
+    "main.ebba972d.css.map": "/agent_front/static/css/main.ebba972d.css.map",
+    "main.df8f4aa0.js.map": "/agent_front/static/js/main.df8f4aa0.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.ebba972d.css",
+    "static/js/main.df8f4aa0.js"
+  ]
+}
