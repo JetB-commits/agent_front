@@ -15,25 +15,25 @@ function App() {
       <nav>
         <ul>
           <li>
-            <Link to="/">Chat</Link>
+            <Link to="/frontend">Chat</Link>
           </li>
           <li>
-            <Link to="/history">Chat History</Link>
+            <Link to="/frontend/history">Chat History</Link>
           </li>
           <li>
-            <Link to="/upload">一問一答アップロード</Link>
+            <Link to="/frontend/upload">一問一答アップロード</Link>
           </li>
           <li>
-            <Link to="/upload_pdf">PDFアップロード</Link>
+            <Link to="/frontend/upload_pdf">PDFアップロード</Link>
           </li>
           <li>
-            <Link to="/upload_url">URLデータアップロード</Link>
+            <Link to="/frontend/upload_url">URLデータアップロード</Link>
           </li>
           <li>
-            <Link to="/upload_urls">複数URLデータアップロード</Link>
+            <Link to="/frontend/upload_urls">複数URLデータアップロード</Link>
           </li>
           <li>
-            <Link to="/upload_sitemap">サイトマップURLアップロード</Link>
+            <Link to="/frontend/upload_sitemap">サイトマップURLアップロード</Link>
           </li>
         </ul>
       </nav>
