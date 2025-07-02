@@ -23,7 +23,7 @@ function UploadURLsForm() {
         try {
             const formData = new FormData();
             formData.append('file', file);
-            const response = await fetch('http://localhost:8002/upload_urls/', {
+            const response = await fetch('https://upload-source-qdrant-281983614239.asia-northeast1.run.app/upload_urls/', {
                 method: 'POST',
                 body: formData,
             });
@@ -41,11 +41,14 @@ function UploadURLsForm() {
     };
 
     return (
-        <div style={{ margin: '2em 0' }}>
+        <div className="upload-form-container">
             <h2>複数URLデータアップロード</h2>
             <form onSubmit={handleSubmit}>
-                <input type="file" accept=".txt,.csv" onChange={handleFileChange} />
-                <button type="submit" disabled={isLoading} style={{ marginLeft: '1em' }}>
+                <div className="form-group">
+                    <label htmlFor="urls-file">URLリストファイルを選択 (.txt, .csv):</label>
+                    <input type="file" id="urls-file" accept=".txt,.csv" onChange={handleFileChange} />
+                </div>
+                <button type="submit" disabled={isLoading}>
                     {isLoading ? '送信中...' : 'アップロード'}
                 </button>
             </form>
@@ -62,9 +65,9 @@ function UploadURLsForm() {
                     </ul>
                 </div>
             ) : result && typeof result === 'string' ? (
-                <p style={{ color: 'green' }}>{result}</p>
+                <p className="success">{result}</p>
             ) : null}
-            {error && <p style={{ color: 'red' }}>{error}</p>}
+            {error && <p className="error">{error}</p>}
         </div>
     );
 }

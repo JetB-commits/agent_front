@@ -12,7 +12,7 @@ function UploadSitemapForm() {
         setResult(null);
         setError(null);
         try {
-            const response = await fetch('http://localhost:8002/upload_sitemap/', {
+            const response = await fetch('https://upload-source-qdrant-281983614239.asia-northeast1.run.app/upload_sitemap/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -33,26 +33,26 @@ function UploadSitemapForm() {
     };
 
     return (
-        <div style={{ margin: '2em 0' }}>
+        <div className="upload-form-container">
             <h2>サイトマップURLアップロード</h2>
             <form onSubmit={handleSubmit}>
-                <div>
-                    <label>サイトマップURL：</label>
+                <div className="form-group">
+                    <label htmlFor="sitemap-url">サイトマップURL：</label>
                     <input
                         type="url"
+                        id="sitemap-url"
                         value={url}
                         onChange={e => setUrl(e.target.value)}
                         required
-                        style={{ width: '60%' }}
                         placeholder="https://example.com/sitemap.xml"
                     />
                 </div>
-                <button type="submit" disabled={isLoading} style={{ marginTop: '1em' }}>
+                <button type="submit" disabled={isLoading}>
                     {isLoading ? '送信中...' : 'アップロード'}
                 </button>
             </form>
-            {result && <p style={{ color: 'green' }}>{result}</p>}
-            {error && <p style={{ color: 'red' }}>{error}</p>}
+            {result && <p className="success">{result}</p>}
+            {error && <p className="error">{error}</p>}
         </div>
     );
 }

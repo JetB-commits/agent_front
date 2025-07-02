@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
 import Chat from './components/Chat';
 import ChatHistory from './ChatHistory';
@@ -7,33 +7,44 @@ import UploadPDFForm from './components/UploadPDFForm';
 import UploadURLForm from './components/UploadURLForm';
 import UploadURLsForm from './components/UploadURLsForm';
 import UploadSitemapForm from './components/UploadSitemapForm';
+import LoginPage from './components/LoginPage'; // LoginPageをインポート
 import './App.css';
 
 function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  const handleLogin = () => {
+    setIsAuthenticated(true);
+  };
+
+  if (!isAuthenticated) {
+    return <LoginPage onLogin={handleLogin} />;
+  }
+
   return (
     <div>
       <nav>
         <ul>
           <li>
-            <Link to="/agent_front">Chat</Link>
+            <Link to="/">Chat</Link>
           </li>
           <li>
-            <Link to="/agent_front/history">Chat History</Link>
+            <Link to="/history/">Chat History</Link>
           </li>
           <li>
-            <Link to="/agent_front/upload">一問一答アップロード</Link>
+            <Link to="/upload/">一問一答アップロード</Link>
           </li>
           <li>
-            <Link to="/agent_front/upload_pdf">PDFアップロード</Link>
+            <Link to="/upload_pdf/">PDFアップロード</Link>
           </li>
           <li>
-            <Link to="/agent_front/upload_url">URLデータアップロード</Link>
+            <Link to="/upload_url/">URLデータアップロード</Link>
           </li>
           <li>
-            <Link to="/agent_front/upload_urls">複数URLデータアップロード</Link>
+            <Link to="/upload_urls/">複数URLデータアップロード</Link>
           </li>
           <li>
-            <Link to="/agent_front/upload_sitemap">サイトマップURLアップロード</Link>
+            <Link to="/upload_sitemap/">サイトマップURLアップロード</Link>
           </li>
         </ul>
       </nav>
