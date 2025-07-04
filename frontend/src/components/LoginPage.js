@@ -8,7 +8,7 @@ function LoginPage({ onLogin }) {
   const handleSubmit = (event) => {
     event.preventDefault();
     // Hardcoded credentials
-    if (username === 'admin' && password === 'password') {
+    if (username === 'admin' && password === 'jettest25@Jet') {
       onLogin();
     } else {
       setError('IDまたはパスワードが違います');

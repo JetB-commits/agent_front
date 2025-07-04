@@ -29,9 +29,6 @@ function App() {
             <Link to="/">Chat</Link>
           </li>
           <li>
-            <Link to="/history/">Chat History</Link>
-          </li>
-          <li>
             <Link to="/upload/">一問一答アップロード</Link>
           </li>
           <li>

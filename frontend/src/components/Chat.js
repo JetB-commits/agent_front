@@ -106,6 +106,27 @@ function Chat() {
   // セッション管理のためのstate
   const [lastResponseId, setLastResponseId] = useState(null);
 
+  const handleResetSession = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch('https://jetb-agent-server-281983614239.asia-northeast1.run.app/reset_session/', {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      setMessages([]); // メッセージをクリア
+      setLastResponseId(null); // セッションIDもクリア
+      alert('セッションがリセットされました。');
+    } catch (error) {
+      console.error("Reset session error:", error);
+      alert('セッションのリセットに失敗しました。');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -223,6 +244,7 @@ function Chat() {
           />
           <button type="submit" disabled={isLoading}>送信</button>
         </form>
+        <button onClick={handleResetSession} disabled={isLoading}>セッションをリセット</button>
       </div>
     </>
   );
