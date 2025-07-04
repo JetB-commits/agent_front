@@ -26,7 +26,7 @@ function UploadURLForm() {
                 throw new Error(data.detail || `HTTP error! status: ${response.status}`);
             }
             const data = await response.json();
-            setResult(data.isUploaded == true ? data.isUploaded : 'URLアップロード成功');
+            setResult(data.status == 200 ? 'URLアップロード成功' : 'URLアップロードに失敗しました');
         } catch (e) {
             setError('アップロードに失敗しました: ' + e.message);
         } finally {

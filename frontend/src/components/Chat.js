@@ -244,7 +244,7 @@ function Chat() {
           />
           <button type="submit" disabled={isLoading}>送信</button>
         </form>
-        <button onClick={handleResetSession} disabled={isLoading}>セッションをリセット</button>
+        <button onClick={handleResetSession} disabled={isLoading}>会話履歴をリセット</button>
       </div>
     </>
   );
