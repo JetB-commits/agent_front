@@ -1,15 +1,21 @@
 import React, { useState } from 'react';
+import { useAuth } from '../context/AuthContext';
 
-function LoginPage({ onLogin }) {
+function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const { login } = useAuth();
 
   const handleSubmit = (event) => {
     event.preventDefault();
     // Hardcoded credentials
     if (username === 'admin' && password === 'jettest25@Jet') {
-      onLogin();
+      if (login(username, password)) {
+        // ログイン成功時は AuthContext が自動的に認証状態を更新
+      } else {
+        setError('ログインに失敗しました');
+      }
     } else {
       setError('IDまたはパスワードが違います');
     }
