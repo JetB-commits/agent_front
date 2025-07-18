@@ -21,14 +21,17 @@ export const AuthProvider = ({ children }) => {
       setIsAuthenticated(true);
     }
     setIsLoading(false);
-  }, []);
-  const login = (username, password) => {
+  }, []);  const login = (username, password) => {
     // 簡単な認証ロジック（実際の実装では適切な認証サーバーと連携）
+    console.log('Login function called with:', username);
     if (username === 'admin' && password === 'jettest25@Jet') {
+      console.log('Credentials are correct, setting authenticated to true');
       localStorage.setItem('authToken', 'dummy-token');
       setIsAuthenticated(true);
+      console.log('isAuthenticated set to true');
       return true;
     }
+    console.log('Credentials are incorrect');
     return false;
   };
 

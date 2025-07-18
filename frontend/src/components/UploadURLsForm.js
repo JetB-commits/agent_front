@@ -32,7 +32,8 @@ function UploadURLsForm() {
                 throw new Error(data.detail || `HTTP error! status: ${response.status}`);
             }
             const data = await response.json();
-            setResult(data.results ? data.results : 'アップロード成功');
+            console.log(data);
+            setResult(data.results.length > 0 ? 'アップロード成功' : 'アップロード失敗');
         } catch (e) {
             setError('アップロードに失敗しました: ' + e.message);
         } finally {

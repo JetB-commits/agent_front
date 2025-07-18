@@ -24,10 +24,8 @@ function ChatHistory() {
             } finally {
                 setIsLoading(false);
             }
-        };
-
-        fetchHistory();
-    }, []);
+        };        fetchHistory();
+    }, [history]);
 
     console.log("Chat history state:", history);
 

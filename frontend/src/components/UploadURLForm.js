@@ -20,13 +20,13 @@ function UploadURLForm() {
                 body: JSON.stringify({url}),
             });
 
-            console.log(response);
+            const data = await response.json();
+            console.log(data);
             if (!response.ok) {
-                const data = await response.json();
                 throw new Error(data.detail || `HTTP error! status: ${response.status}`);
             }
-            const data = await response.json();
-            setResult(data.status == 200 ? 'URLアップロード成功' : 'URLアップロードに失敗しました');
+            
+            setResult(data.isUploaded === true ? 'URLアップロード成功' : 'URLアップロードに失敗しました');
         } catch (e) {
             setError('アップロードに失敗しました: ' + e.message);
         } finally {

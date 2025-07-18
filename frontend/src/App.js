@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route, Link, Navigate } from 'react-router-dom';
+import { Routes, Route, Link } from 'react-router-dom';
 import Chat from './components/Chat';
 import ChatHistory from './ChatHistory';
 import UploadQAForm from './components/UploadQAForm';
@@ -13,78 +13,50 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import './App.css';
 
 function AppContent() {
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, logout, isLoading } = useAuth();
+
+  if (isLoading) {
+    return <div style={{ padding: '20px', textAlign: 'center' }}>読み込み中...</div>;
+  }
 
   return (
-    <div>
-      {isAuthenticated && (
-        <nav>
-          <ul>
-            <li>
-              <Link to="/">Chat</Link>
-            </li>
-            <li>
-              <Link to="/history">Chat History</Link>
-            </li>
-            <li>
-              <Link to="/upload">一問一答アップロード</Link>
-            </li>
-            <li>
-              <Link to="/upload_pdf">PDFアップロード</Link>
-            </li>
-            <li>
-              <Link to="/upload_url">URLデータアップロード</Link>
-            </li>
-            <li>
-              <Link to="/upload_urls">複数URLデータアップロード</Link>
-            </li>
-            <li>
-              <Link to="/upload_sitemap">サイトマップURLアップロード</Link>
-            </li>
-            <li>
-              <button onClick={logout} style={{ background: 'none', border: 'none', color: 'blue', cursor: 'pointer' }}>
-                ログアウト
-              </button>
-            </li>
-          </ul>
-        </nav>
-      )}
+    <div className="App">
       <Routes>
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/history" element={
-          <ProtectedRoute>
-            <ChatHistory />
-          </ProtectedRoute>
-        } />
-        <Route path="/upload" element={
-          <ProtectedRoute>
-            <UploadQAForm />
-          </ProtectedRoute>
-        } />
-        <Route path="/upload_pdf" element={
-          <ProtectedRoute>
-            <UploadPDFForm />
-          </ProtectedRoute>
-        } />
-        <Route path="/upload_url" element={
-          <ProtectedRoute>
-            <UploadURLForm />
-          </ProtectedRoute>
-        } />
-        <Route path="/upload_urls" element={
-          <ProtectedRoute>
-            <UploadURLsForm />
-          </ProtectedRoute>
-        } />
-        <Route path="/upload_sitemap" element={
-          <ProtectedRoute>
-            <UploadSitemapForm />
-          </ProtectedRoute>
-        } />
-        <Route path="/" element={
-          <ProtectedRoute>
-            <Chat />
-          </ProtectedRoute>
+        <Route path="/*" element={
+          isAuthenticated ? (
+            <>
+              <aside className="sidebar">
+                <h1>うちのAI</h1>
+                <nav>
+                  <ul>
+                    <li><Link to="/">Chat</Link></li>
+                    <li><Link to="/upload">一問一答アップロード</Link></li>
+                    <li><Link to="/upload_pdf">PDFアップロード</Link></li>
+                    <li><Link to="/upload_url">URLデータアップロード</Link></li>
+                    <li><Link to="/upload_urls">複数URLデータアップロード</Link></li>
+                    <li><Link to="/upload_sitemap">サイトマップURLアップロード</Link></li>
+                  </ul>
+                </nav>
+                <button onClick={logout} className="logout-button">
+                  ログアウト
+                </button>
+              </aside>
+              <main className="main-content">
+                <Routes>
+                  <Route path="/history" element={<ProtectedRoute><ChatHistory /></ProtectedRoute>} />
+                  <Route path="/upload" element={<ProtectedRoute><UploadQAForm /></ProtectedRoute>} />
+                  <Route path="/upload_pdf" element={<ProtectedRoute><UploadPDFForm /></ProtectedRoute>} />
+                  <Route path="/upload_url" element={<ProtectedRoute><UploadURLForm /></ProtectedRoute>} />
+                  <Route path="/upload_urls" element={<ProtectedRoute><UploadURLsForm /></ProtectedRoute>} />
+                  <Route path="/upload_sitemap" element={<ProtectedRoute><UploadSitemapForm /></ProtectedRoute>} />
+                  <Route path="/" element={<ProtectedRoute><Chat /></ProtectedRoute>} />
+                </Routes>
+              </main>
+            </>
+          ) : (
+            <LoginPage />
+          )
         } />
       </Routes>
     </div>
@@ -100,3 +72,4 @@ function App() {
 }
 
 export default App;
+
