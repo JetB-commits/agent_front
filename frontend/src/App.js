@@ -9,6 +9,7 @@ import UploadURLsForm from './components/UploadURLsForm';
 import UploadSitemapForm from './components/UploadSitemapForm';
 import LoginPage from './components/LoginPage';
 import ProtectedRoute from './components/ProtectedRoute';
+import AzureChat from './components/AzureChat';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import './App.css';
 
@@ -44,7 +45,7 @@ function AppContent() {
               </aside>
               <main className="main-content">
                 <Routes>
-                  <Route path="/history" element={<ProtectedRoute><ChatHistory /></ProtectedRoute>} />
+                  <Route path="/azure_chat" element={<ProtectedRoute><AzureChat /></ProtectedRoute>} />
                   <Route path="/upload" element={<ProtectedRoute><UploadQAForm /></ProtectedRoute>} />
                   <Route path="/upload_pdf" element={<ProtectedRoute><UploadPDFForm /></ProtectedRoute>} />
                   <Route path="/upload_url" element={<ProtectedRoute><UploadURLForm /></ProtectedRoute>} />
