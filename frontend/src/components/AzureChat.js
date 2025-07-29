@@ -40,11 +40,16 @@ function AzureChat() {
     e.preventDefault();
     if (!input.trim() || isLoading) return;
 
+    console.log('=== Azure Chat Submit Started ===');
     const currentInput = input; // 入力値を保存
+    console.log('User input:', currentInput);
+    
     const userMessage = { sender: 'user', text: currentInput, id: `user-${Date.now()}` };
     setMessages((prevMessages) => [...prevMessages, userMessage]);
 
     const botMessageId = `bot-${Date.now()}`;
+    console.log('Bot message ID:', botMessageId);
+    
     const placeholderMessage = { 
       id: botMessageId, 
       sender: 'bot', 
@@ -59,6 +64,11 @@ function AzureChat() {
     setIsLoading(true);
 
     try {
+      console.log('Sending request to Azure agent...', {
+        question: currentInput,
+        previous_response_id: lastResponseId
+      });
+
       const response = await fetch('https://jetb-agent-server-281983614239.asia-northeast1.run.app/azure_agent/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -68,27 +78,39 @@ function AzureChat() {
         }),
       });
 
-      console.log(response)
+      console.log('Response received:', response);
+      console.log('Response status:', response.status);
+      console.log('Response headers:', response.headers);
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        const errorBody = await response.text();
+        console.error('Response error body:', errorBody);
+        throw new Error(`HTTP error! status: ${response.status}, body: ${errorBody}`);
       }
 
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
       let buffer = '';
 
+      console.log('Starting to read streaming response...');
+
       while (true) {
         const { done, value } = await reader.read();
-        if (done) break;
+        if (done) {
+          console.log('Streaming completed');
+          break;
+        }
 
         buffer += decoder.decode(value, { stream: true });
+        console.log('Buffer updated:', buffer);
 
         // 改行で分割してJSONを処理
         let idx;
         while ((idx = buffer.indexOf('\n')) >= 0) {
           const rawLine = buffer.slice(0, idx).trimEnd();
           buffer = buffer.slice(idx + 1);
+          
+          console.log('Processing line:', rawLine);
           
           if (!rawLine) continue; // 空行スキップ
 
@@ -167,13 +189,28 @@ function AzureChat() {
       }
     } catch (error) {
       console.error("Fetch error:", error);
+      console.error("Error details:", {
+        message: error.message,
+        stack: error.stack,
+        name: error.name
+      });
+      
+      let errorMessage = `❌ 接続エラーが発生しました: ${error.message}`;
+      
+      // より具体的なエラーメッセージを提供
+      if (error.message.includes('500')) {
+        errorMessage = `❌ サーバーエラー（500）: AZURE_OPENAI_MODELの設定を確認してください`;
+      } else if (error.message.includes('NetworkError') || error.message.includes('Failed to fetch')) {
+        errorMessage = `❌ ネットワークエラー: サーバーに接続できません`;
+      }
+      
       setMessages((prevMessages) =>
         prevMessages.map(msg =>
           msg.id === botMessageId 
             ? { 
                 ...msg, 
                 isLoading: false, 
-                text: `❌ 接続エラーが発生しました: ${error.message}`,
+                text: errorMessage,
                 source: 'Error',
                 source_id: 'connection_error'
               } 
