@@ -223,6 +223,61 @@
   background-color: #2563eb;
 }
 
+/* Azure Chat専用スタイル */
+.message-content {
+  margin-bottom: 5px;
+}
+
+.message-source {
+  opacity: 0.7;
+  font-style: italic;
+}
+
+.message-source small {
+  color: #888;
+  font-size: 0.8em;
+}
+
+.chat-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  padding: 10px 0;
+  border-top: 1px solid #333;
+}
+
+.response-id {
+  color: #888;
+  font-size: 0.8em;
+}
+
+.input-form button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.reset-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Azure Chat specific message styling */
+.message.bot .message-content {
+  background-color: #2a2a2a;
+  border-left: 3px solid #0078d4; /* Azure blue */
+}
+
+.message.user .message-content {
+  background-color: #0078d4;
+  color: white;
+}
+
+/* Loading indicator for Azure Chat */
+.message.bot .loader {
+  border-color: #0078d4 transparent transparent transparent;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .App {

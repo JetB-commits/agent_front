@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-function Chat() {
+function AzureChat() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const messagesEndRef = useRef(null);
@@ -40,25 +40,39 @@ function Chat() {
     e.preventDefault();
     if (!input.trim() || isLoading) return;
 
-    const userMessage = { sender: 'user', text: input, id: `user-${Date.now()}` };
+    const currentInput = input; // 入力値を保存
+    const userMessage = { sender: 'user', text: currentInput, id: `user-${Date.now()}` };
     setMessages((prevMessages) => [...prevMessages, userMessage]);
 
     const botMessageId = `bot-${Date.now()}`;
-    const placeholderMessage = { id: botMessageId, sender: 'bot', text: '', isLoading: true };
+    const placeholderMessage = { 
+      id: botMessageId, 
+      sender: 'bot', 
+      text: '', 
+      isLoading: true,
+      source: null,
+      source_id: null 
+    };
     setMessages((prevMessages) => [...prevMessages, placeholderMessage]);
 
     setInput('');
     setIsLoading(true);
 
     try {
-      const response = await fetch('https://jetb-agent-server-281983614239.asia-northeast1.run.app/azure_agent/stream/', {
+      const response = await fetch('https://jetb-agent-server-281983614239.asia-northeast1.run.app/azure_agent/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          question: input,
+          question: currentInput,
           previous_response_id: lastResponseId
         }),
       });
+
+      console.log(response)
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
 
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
@@ -70,68 +84,100 @@ function Chat() {
 
         buffer += decoder.decode(value, { stream: true });
 
-        // 改行は \n または \r\n のどちらも想定
+        // 改行で分割してJSONを処理
         let idx;
         while ((idx = buffer.indexOf('\n')) >= 0) {
-          const rawLine = buffer.slice(0, idx).trimEnd(); // \r も除外
-          buffer = buffer.slice(idx + 1);                 // 次ループに残す
-          if (!rawLine) continue;                         // 空行はスキップ
+          const rawLine = buffer.slice(0, idx).trimEnd();
+          buffer = buffer.slice(idx + 1);
+          
+          if (!rawLine) continue; // 空行スキップ
 
-          // SSE 形式なら先頭の 'data:' を外す
-          const line = rawLine.startsWith('data:') ? rawLine.slice(5).trimStart()
-            : rawLine;
+          // SSE形式の場合は 'data:' プレフィックスを除去
+          const line = rawLine.startsWith('data:') ? rawLine.slice(5).trimStart() : rawLine;
+          
+          if (!line) continue; // 空のデータ行スキップ
 
           let parsed;
           try {
             parsed = JSON.parse(line);
           } catch (err) {
-            console.error('JSON parse error:', err, line);
-            // パース失敗行は無視して続行
-            continue;
+            console.error('JSON parse error:', err, 'Line:', line);
+            continue; // パースエラーは無視して続行
           }
+
+          console.log('Received message:', parsed);
 
           switch (parsed.type) {
             case 'chunk':
-              setMessages(prev =>
-                prev.map(msg =>
-                  msg.id === botMessageId
-                    ? { ...msg, text: msg.text + parsed.content }
-                    : msg
-                )
-              );
+              // Azure OpenAI からのストリーミングチャンクを処理
+              if (parsed.content) {
+                setMessages(prev =>
+                  prev.map(msg =>
+                    msg.id === botMessageId
+                      ? { ...msg, text: msg.text + parsed.content }
+                      : msg
+                  )
+                );
+              }
               break;
 
             case 'metadata':
+              // Azure OpenAI からのメタデータを処理
               setMessages(prev =>
                 prev.map(msg =>
-                  msg.id === botMessageId ? { ...msg, isLoading: false } : msg
-                )
-              );
-              setLastResponseId(parsed.response_id);
-              break;
-
-            case 'error':
-              // 例外を投げず UI に表示して続行
-              setMessages(prev =>
-                prev.map(msg =>
-                  msg.id === botMessageId
-                    ? { ...msg, isLoading: false, text: '⚠ ' + parsed.content }
+                  msg.id === botMessageId 
+                    ? { 
+                        ...msg, 
+                        isLoading: false,
+                        source: parsed.source || 'Azure OpenAI',
+                        source_id: parsed.source_id || 'azure_openai'
+                      } 
                     : msg
                 )
               );
+              
+              // response_id が存在する場合は保存
+              if (parsed.response_id) {
+                setLastResponseId(parsed.response_id);
+              }
+              break;
+
+            case 'error':
+              // エラーメッセージを表示
+              setMessages(prev =>
+                prev.map(msg =>
+                  msg.id === botMessageId
+                    ? { 
+                        ...msg, 
+                        isLoading: false, 
+                        text: `⚠️ エラー: ${parsed.content}`,
+                        source: 'Error',
+                        source_id: 'error'
+                      }
+                    : msg
+                )
+              );
+              console.error('Server error:', parsed.content);
               break;
 
             default:
-              console.warn('Unknown message type:', parsed);
+              console.warn('Unknown message type:', parsed.type, parsed);
           }
         }
       }
     } catch (error) {
-      console.log("Fetch error:", error);
-      const errorMessage = { sender: 'bot', text: 'エラーが発生しました。', isLoading: false };
+      console.error("Fetch error:", error);
       setMessages((prevMessages) =>
         prevMessages.map(msg =>
-          msg.id === botMessageId ? { ...errorMessage, id: Date.now() } : msg
+          msg.id === botMessageId 
+            ? { 
+                ...msg, 
+                isLoading: false, 
+                text: `❌ 接続エラーが発生しました: ${error.message}`,
+                source: 'Error',
+                source_id: 'connection_error'
+              } 
+            : msg
         )
       );
     } finally {
@@ -144,8 +190,15 @@ function Chat() {
       <div className="chat-window">
         {messages.map((msg) => (
           <div key={msg.id} className={`message ${msg.sender}`}>
-            {msg.text}
-            {msg.isLoading && <div className="loader"></div>}
+            <div className="message-content">
+              {msg.text}
+              {msg.isLoading && <div className="loader"></div>}
+            </div>
+            {msg.source && msg.sender === 'bot' && (
+              <div className="message-source">
+                <small>Source: {msg.source} ({msg.source_id})</small>
+              </div>
+            )}
           </div>
         ))}
         <div ref={messagesEndRef} />
@@ -155,15 +208,30 @@ function Chat() {
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="メッセージを入力..."
+          placeholder="Azure OpenAIに質問を入力..."
           disabled={isLoading}
         />
-        <button type="submit" disabled={isLoading}>送信</button>
+        <button type="submit" disabled={isLoading || !input.trim()}>
+          {isLoading ? '送信中...' : '送信'}
+        </button>
       </form>
-      <button onClick={handleResetSession} disabled={isLoading} className="reset-button">会話履歴をリセット</button>
+      <div className="chat-controls">
+        <button 
+          onClick={handleResetSession} 
+          disabled={isLoading} 
+          className="reset-button"
+        >
+          {isLoading ? 'リセット中...' : '会話履歴をリセット'}
+        </button>
+        {lastResponseId && (
+          <small className="response-id">
+            Last Response ID: {lastResponseId}
+          </small>
+        )}
+      </div>
     </>
   );
 }
 
-export default Chat;
+export default AzureChat;
 
