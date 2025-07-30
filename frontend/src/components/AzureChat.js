@@ -64,17 +64,13 @@ function AzureChat() {
     setIsLoading(true);
 
     try {
-      console.log('Sending request to Azure agent...', {
-        question: currentInput,
-        previous_response_id: lastResponseId
-      });
 
       const response = await fetch('https://jetb-agent-server-281983614239.asia-northeast1.run.app/azure_agent/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           question: currentInput,
-          previous_response_id: lastResponseId
+          user_id: '1'
         }),
       });
 
@@ -158,10 +154,6 @@ function AzureChat() {
                 )
               );
               
-              // response_id が存在する場合は保存
-              if (parsed.response_id) {
-                setLastResponseId(parsed.response_id);
-              }
               break;
 
             case 'error':
