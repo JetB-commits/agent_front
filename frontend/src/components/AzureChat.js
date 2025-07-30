@@ -10,7 +10,7 @@ function AzureChat() {
   const handleResetSession = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch('https://jetb-agent-server-281983614239.asia-northeast1.run.app/reset_session/', {
+      const response = await fetch('https://jetb-agent-server-281983614239.asia-northeast1.run.app/azure_agent_reset/', {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
       });
