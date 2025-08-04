@@ -51,7 +51,7 @@ function Chat() {
     setIsLoading(true);
 
     try {
-      const response = await fetch('https://jetb-agent-server-281983614239.asia-northeast1.run.app/rag_mcp/', {
+      const response = await fetch('https://jetb-agent-server-281983614239.asia-northeast1.run.app/rag_mcp_azure/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
