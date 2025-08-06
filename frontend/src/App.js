@@ -31,7 +31,7 @@ function AppContent() {
                 <h1>うちのAI</h1>
                 <nav>
                   <ul>
-                    <li><Link to="/">Chat</Link></li>
+                    <li><Link to="/">テスト用チャット</Link></li>
                     <li><Link to="/azure_chat">Azure Chat</Link></li>
                     <li><Link to="/upload">一問一答アップロード</Link></li>
                     <li><Link to="/upload_pdf">PDFアップロード</Link></li>
