@@ -17,7 +17,7 @@ function UploadSitemapForm() {
         setResult(null);
         setError(null);
         try {
-            const response = await fetch('https://upload-source-qdrant-281983614239.asia-northeast1.run.app/upload_sitemap/', {
+            const response = await fetch('https://upload-source-qdrant-281983614239.asia-northeast1.run.app/upload_sitemap_yamaha/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

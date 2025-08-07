@@ -29,7 +29,7 @@ function UploadURLsForm() {
             const formData = new FormData();
             formData.append('file', file);
             formData.append('selected_number', parseInt(selectedNum, 10));
-            const response = await fetch('https://upload-source-qdrant-281983614239.asia-northeast1.run.app/upload_urls/', {
+            const response = await fetch('https://upload-source-qdrant-281983614239.asia-northeast1.run.app/upload_urls_yamaha/', {
                 method: 'POST',
                 body: formData,
             });
