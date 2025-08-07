@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 function UploadSitemapForm() {
     const [url, setUrl] = useState('');
@@ -6,6 +6,10 @@ function UploadSitemapForm() {
     const [result, setResult] = useState(null);
     const [error, setError] = useState(null);
     const [selectedNum, setSelectedNum] = useState(1);
+
+    useEffect(() => {
+        setSelectedNum(1);
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();

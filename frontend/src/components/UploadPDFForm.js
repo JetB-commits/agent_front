@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 function UploadPDFForm() {
     const [file, setFile] = useState(null);
@@ -6,6 +6,10 @@ function UploadPDFForm() {
     const [result, setResult] = useState(null);
     const [error, setError] = useState(null);
     const [selectedNum, setSelectedNum] = useState(1);
+
+    useEffect(() => {
+        setSelectedNum(1);
+    }, []);
 
     const handleFileChange = (e) => {
         setFile(e.target.files[0]);

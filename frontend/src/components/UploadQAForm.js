@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 function UploadQAForm() {
     const [question, setQuestion] = useState('');
     const [answer, setAnswer] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [result, setResult] = useState(null);
-    const [error, setError] = useState(null);
-    const [selectedNum, setSelectedNum] = useState(1); 
+    const [error, setError] = useState(null);    const [selectedNum, setSelectedNum] = useState(1);
+
+    useEffect(() => {
+        setSelectedNum(1);
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
