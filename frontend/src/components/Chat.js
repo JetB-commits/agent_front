@@ -237,7 +237,7 @@ function Chat() {
       <div className="chat-window">
         <div className="message user">
           <p>こんにちは！どの製品についてのご質問ですか？<br />○○の場合は1、○○の場合は2、○○の場合は3、○○の場合は4、○○の場合は5を選択してください</p>
-          <select value={selectedNum} onChange={e => handleSelectValChange(e.target.value)}>
+          <select value={selectedNum} onChange={e => handleSelectValChange(e.target.value)} id="selected_number">
             <option value={1}>1</option>
             <option value={2}>2</option>
             <option value={3}>3</option>
