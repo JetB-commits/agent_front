@@ -7,7 +7,7 @@ function Chat() {
   const messagesEndRef = useRef(null);
   const [isLoading, setIsLoading] = useState(false);
   const [lastResponseId, setLastResponseId] = useState(null);
-  const [selectedNum, setSelectedNum] = useState(null);
+  const [selectedNum, setSelectedNum] = useState(1); // デフォルト値を1に設定
 
   const handleResetSession = async () => {
     setIsLoading(true);
@@ -67,14 +67,21 @@ function Chat() {
 
     try {
 
+      // selectedNumをintegerとして確実に送信
+      const selectedNumber = Number.isInteger(selectedNum) ? selectedNum : parseInt(selectedNum, 10);
+      console.log('Sending selected_number as integer:', selectedNumber, typeof selectedNumber);
+      
+      const requestBody = {
+        question: currentInput,
+        user_id: '1',
+        selected_number: selectedNumber
+      };
+      console.log('Request body:', requestBody);
+
       const response = await fetch('https://jetb-agent-server-281983614239.asia-northeast1.run.app/azure_agent_yamaha/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          question: currentInput,
-          user_id: '1',
-          selected_number: selectedNum
-        }),
+        body: JSON.stringify(requestBody),
       });
 
       console.log('Response received:', response);
@@ -218,8 +225,9 @@ function Chat() {
   };
 
   const handleSelectValChange = (value) => {
-    setSelectedNum(value);
-    console.log('Selected number:', value);
+    const intValue = parseInt(value, 10);
+    setSelectedNum(intValue);
+    console.log('Selected number (as integer):', intValue, typeof intValue);
   };
 
   console.log('Selected number:', selectedNum);
@@ -229,12 +237,12 @@ function Chat() {
       <div className="chat-window">
         <div className="message user">
           <p>こんにちは！どの製品についてのご質問ですか？<br />○○の場合は1、○○の場合は2、○○の場合は3、○○の場合は4、○○の場合は5を選択してください</p>
-          <select onChange={e => handleSelectValChange(e.target.value)}>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
+          <select value={selectedNum} onChange={e => handleSelectValChange(e.target.value)}>
+            <option value={1}>1</option>
+            <option value={2}>2</option>
+            <option value={3}>3</option>
+            <option value={4}>4</option>
+            <option value={5}>5</option>
           </select>
         </div>
         {messages.map((msg) => (
