@@ -20,7 +20,7 @@ function UploadURLForm() {
                 },
                 body: JSON.stringify({
                     url,
-                    selected_number: parseInt(selectedNum, 10)
+                    selected_number: parseInt(selectedNum, 10)  
                 }),
             });
 
