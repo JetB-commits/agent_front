@@ -15,7 +15,7 @@ module.exports = function override(config, env) {
         deadCodeInjection: false,
         debugProtection: false,
         debugProtectionInterval: 0,
-        disableConsoleOutput: true,
+        disableConsoleOutput: false,
         identifierNamesGenerator: 'hexadecimal',
         log: false,
         numbersToExpressions: false,
