@@ -7,10 +7,6 @@ function UploadURLForm() {
     const [error, setError] = useState(null);
     const [selectedNum, setSelectedNum] = useState(1);
 
-    useEffect(() => {
-        setSelectedNum(1);
-    }, []);
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsLoading(true);
@@ -43,7 +39,9 @@ function UploadURLForm() {
     };
 
     const handleSelectValChange = (value) => {
+        console.log('Received value:', value, typeof value);
         const intValue = parseInt(value, 10);
+        console.log('Parsed value:', intValue, typeof intValue);
         setSelectedNum(intValue);
         console.log('Selected number (as integer):', intValue, typeof intValue);
     }
