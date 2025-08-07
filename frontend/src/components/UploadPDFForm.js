@@ -5,6 +5,7 @@ function UploadPDFForm() {
     const [isLoading, setIsLoading] = useState(false);
     const [result, setResult] = useState(null);
     const [error, setError] = useState(null);
+    const [selectedNum, setSelectedNum] = useState(1);
 
     const handleFileChange = (e) => {
         setFile(e.target.files[0]);
@@ -23,6 +24,7 @@ function UploadPDFForm() {
         try {
             const formData = new FormData();
             formData.append('file', file);
+            formData.append('selected_number', parseInt(selectedNum, 10));
             const response = await fetch('https://upload-source-qdrant-281983614239.asia-northeast1.run.app/upload_pdf/', {
                 method: 'POST',
                 body: formData,
@@ -39,6 +41,12 @@ function UploadPDFForm() {
         }
     };
 
+    const handleSelectValChange = (value) => {
+        const intValue = parseInt(value, 10);
+        setSelectedNum(intValue);
+        console.log('Selected number (as integer):', intValue, typeof intValue);
+    }
+
     return (
         <div className="upload-form-container">
             <h2>PDFアップロード</h2>
@@ -46,6 +54,16 @@ function UploadPDFForm() {
                 <div className="form-group">
                     <label htmlFor="pdf-file">PDFファイルを選択:</label>
                     <input type="file" id="pdf-file" accept="application/pdf" onChange={handleFileChange} />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="uploadDestination">アップロード先指定：</label>
+                    <select value={selectedNum} onChange={e => handleSelectValChange(e.target.value)}>
+                        <option value={1}>1</option>
+                        <option value={2}>2</option>
+                        <option value={3}>3</option>
+                        <option value={4}>4</option>
+                        <option value={5}>5</option>
+                    </select>
                 </div>
                 <button type="submit" disabled={isLoading}>
                     {isLoading ? '送信中...' : 'アップロード'}

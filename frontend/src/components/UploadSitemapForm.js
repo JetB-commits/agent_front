@@ -5,6 +5,7 @@ function UploadSitemapForm() {
     const [isLoading, setIsLoading] = useState(false);
     const [result, setResult] = useState(null);
     const [error, setError] = useState(null);
+    const [selectedNum, setSelectedNum] = useState(1);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -17,7 +18,10 @@ function UploadSitemapForm() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ url }),
+                body: JSON.stringify({ 
+                    url, 
+                    selected_number: parseInt(selectedNum, 10) 
+                }),
             });
             if (!response.ok) {
                 const data = await response.json();
@@ -31,6 +35,12 @@ function UploadSitemapForm() {
             setIsLoading(false);
         }
     };
+
+    const handleSelectValChange = (value) => {
+        const intValue = parseInt(value, 10);
+        setSelectedNum(intValue);
+        console.log('Selected number (as integer):', intValue, typeof intValue);
+    }
 
     return (
         <div className="upload-form-container">
@@ -46,6 +56,16 @@ function UploadSitemapForm() {
                         required
                         placeholder="https://example.com/sitemap.xml"
                     />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="uploadDestination">アップロード先指定：</label>
+                    <select value={selectedNum} onChange={e => handleSelectValChange(e.target.value)}>
+                        <option value={1}>1</option>
+                        <option value={2}>2</option>
+                        <option value={3}>3</option>
+                        <option value={4}>4</option>
+                        <option value={5}>5</option>
+                    </select>
                 </div>
                 <button type="submit" disabled={isLoading}>
                     {isLoading ? '送信中...' : 'アップロード'}
