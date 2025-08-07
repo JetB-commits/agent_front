@@ -1,3 +1,4 @@
+// ymh
 import React, { useState, useRef, useEffect } from 'react';
 
 function Chat() {
@@ -6,6 +7,7 @@ function Chat() {
   const messagesEndRef = useRef(null);
   const [isLoading, setIsLoading] = useState(false);
   const [lastResponseId, setLastResponseId] = useState(null);
+  const [selectedNum, setSelectedNum] = useState(null);
 
   const handleResetSession = async () => {
     setIsLoading(true);
@@ -41,7 +43,7 @@ function Chat() {
     if (!input.trim() || isLoading) return;
 
     console.log('=== Azure Chat Submit Started ===');
-    const currentInput = input; // 入力値を保存
+    const currentInput = input; // 入力値を保存   
     console.log('User input:', currentInput);
     
     const userMessage = { sender: 'user', text: currentInput, id: `user-${Date.now()}` };
@@ -70,7 +72,8 @@ function Chat() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           question: currentInput,
-          user_id: '1'
+          user_id: '1',
+          selected_number: selectedNum
         }),
       });
 
@@ -214,9 +217,26 @@ function Chat() {
     }
   };
 
+  const handleSelectValChange = (value) => {
+    setSelectedNum(value);
+    console.log('Selected number:', value);
+  };
+
+  console.log('Selected number:', selectedNum);
+
   return (
     <>
       <div className="chat-window">
+        <div className="message user">
+          <p>こんにちは！どの製品についてのご質問ですか？<br />○○の場合は1、○○の場合は2、○○の場合は3、○○の場合は4、○○の場合は5を選択してください</p>
+          <select onChange={e => handleSelectValChange(e.target.value)}>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
+        </div>
         {messages.map((msg) => (
           <div key={msg.id} className={`message ${msg.sender}`}>
             <div className="message-content">
