@@ -1,7 +1,6 @@
 import React from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
 import Chat from './components/Chat';
-import ChatHistory from './ChatHistory';
 import UploadQAForm from './components/UploadQAForm';
 import UploadPDFForm from './components/UploadPDFForm';
 import UploadURLForm from './components/UploadURLForm';
