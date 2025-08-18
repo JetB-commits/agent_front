@@ -1,12 +1,12 @@
 {
   "files": {
-    "main.js": "/agent_front/static/js/main.cb03313f.js",
+    "main.js": "/agent_front/static/js/main.9f958489.js",
     "main.css": "/agent_front/static/css/main.f915879b.css",
     "index.html": "/agent_front/index.html",
     "main.f915879b.css.map": "/agent_front/static/css/main.f915879b.css.map"
   },
   "entrypoints": [
-    "static/js/main.cb03313f.js",
+    "static/js/main.9f958489.js",
     "static/css/main.f915879b.css"
   ]
 }
