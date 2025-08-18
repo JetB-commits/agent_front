@@ -16,7 +16,7 @@ function LearningIndex() {
     const fetchData = async (collectionName) => {
         try {
             setIsLoading(true);
-            const response = await fetch('https://upload-source-qdrant-281983614239.asia-northeast1.run.app/get_learning_data', {
+            const response = await fetch('https://upload-source-qdrant-281983614239.asia-northeast1.run.app/get_learning_data/', {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
