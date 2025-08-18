@@ -9,6 +9,7 @@ import UploadSitemapForm from './components/UploadSitemapForm';
 import LoginPage from './components/LoginPage';
 import ProtectedRoute from './components/ProtectedRoute';
 import AzureChat from './components/AzureChat';
+import LearningIndex from './components/LearningIndex';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import './App.css';
 
@@ -37,6 +38,7 @@ function AppContent() {
                     <li><Link to="/upload_url">URLデータアップロード</Link></li>
                     <li><Link to="/upload_urls">複数URLデータアップロード</Link></li>
                     <li><Link to="/upload_sitemap">サイトマップURLアップロード</Link></li>
+                    <li><Link to="/learning_index">学習データ一覧</Link></li>
                   </ul>
                 </nav>
                 <button onClick={logout} className="logout-button">
@@ -51,6 +53,7 @@ function AppContent() {
                   <Route path="/upload_url" element={<ProtectedRoute><UploadURLForm /></ProtectedRoute>} />
                   <Route path="/upload_urls" element={<ProtectedRoute><UploadURLsForm /></ProtectedRoute>} />
                   <Route path="/upload_sitemap" element={<ProtectedRoute><UploadSitemapForm /></ProtectedRoute>} />
+                  <Route path="/learning_index" element={<ProtectedRoute><LearningIndex /></ProtectedRoute>} />
                   <Route path="/" element={<ProtectedRoute><Chat /></ProtectedRoute>} />
                 </Routes>
               </main>
