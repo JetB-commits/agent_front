@@ -266,7 +266,7 @@ function Chat() {
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="Azure OpenAIに質問を入力..."
+          placeholder="質問を入力してください"
           disabled={isLoading}
         />
         <button type="submit" disabled={isLoading || !input.trim()}>
@@ -279,7 +279,7 @@ function Chat() {
           disabled={isLoading} 
           className="reset-button"
         >
-          {isLoading ? 'リセット中...' : '会話履歴をリセット'}
+          {isLoading ? '実行中...' : '会話履歴をリセット'}
         </button>
         {lastResponseId && (
           <small className="response-id">
