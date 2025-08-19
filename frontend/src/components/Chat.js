@@ -128,6 +128,7 @@ function Chat() {
           let parsed;
           try {
             parsed = JSON.parse(line);
+            console.log(parsed)
           } catch (err) {
             console.error('JSON parse error:', err, 'Line:', line);
             continue; // パースエラーは無視して続行
