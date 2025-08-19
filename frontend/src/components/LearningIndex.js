@@ -25,7 +25,10 @@ function LearningIndex() {
             });
 
             const finalResponse = await response.json();
-            const dataArr = finalResponse.points.map(point => point.payload.metadata.title ?  point.payload.metadata.title : point.payload.metadata.source)
+            const dataArr = finalResponse.points.map(point => ({
+                sourceTitle: point.payload.metadata.title ? point.payload.metadata.title : point.payload.metadata.source,
+                sourceType: point.payload.metadata.type
+            }));
             console.log(dataArr);
             setData(dataArr);
         } catch (error) {
@@ -61,7 +64,8 @@ function LearningIndex() {
                 ) : (
                     data && data.map((item, index) => (
                         <div key={index} className="data-item">
-                            {item}
+                            <div className="data-item-title">{item.sourceTitle}</div>
+                            {item.sourceType && <div className="data-item-type">{item.sourceType}</div>}
                         </div>
                     ))
                 )} 
