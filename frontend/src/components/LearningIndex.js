@@ -73,7 +73,7 @@ function LearningIndex() {
                     data && data.map((item, index) => (
                         <div key={index} className="data-item">
                             <div className="data-item-title">{item.sourceTitle}</div>
-                            {item.sourceType && <div className="data-item-type">{item.sourceType}</div>}
+                            {item.sourceType && <div className="data-item-type">データ形式:{item.sourceType}</div>}
                             {item.sourceUrl && (
                                 <div className="data-item-url">
                                     <a href={item.sourceUrl} target="_blank" rel="noreferrer nofollow">{item.sourceUrl}</a>
