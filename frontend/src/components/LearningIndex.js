@@ -76,7 +76,7 @@ function LearningIndex() {
                             {item.sourceType && <div className="data-item-type">データ形式:{item.sourceType}</div>}
                             {item.sourceUrl && (
                                 <div className="data-item-url">
-                                    <a href={item.sourceUrl} target="_blank" rel="noreferrer nofollow">{item.sourceUrl}</a>
+                                    <a href={item.sourceUrl} target="_blank" rel="noreferrer nofollow" style={{ color: '#fff' }}>{item.sourceUrl}</a>
                                 </div>
                             )}
                         </div>
