@@ -25,7 +25,8 @@ function LearningIndex() {
             });
 
             const finalResponse = await response.json();
-            const dataArr = finalResponse.points.map(point => point.payload.metadata.source)
+            console.log('Final response:', finalResponse);
+            const dataArr = finalResponse.points.map(point => point.payload.metadata.title ?  point.payload.metadata.title : point.payload.metadata.source)
             setData(dataArr);
         } catch (error) {
             console.error('Error fetching data:', error);
