@@ -32,7 +32,7 @@ function AppContent() {
                 <nav>
                   <ul>
                     <li><Link to="/">テスト用チャット</Link></li>
-                    <li><Link to="/azure_chat">Azure Chat</Link></li>
+                    {/* <li><Link to="/azure_chat">Azure Chat</Link></li> */}
                     <li><Link to="/upload">一問一答アップロード</Link></li>
                     <li><Link to="/upload_pdf">PDFアップロード</Link></li>
                     <li><Link to="/upload_url">URLデータアップロード</Link></li>
