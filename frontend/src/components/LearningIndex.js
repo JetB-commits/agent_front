@@ -25,8 +25,8 @@ function LearningIndex() {
             });
 
             const finalResponse = await response.json();
-            console.log('Final response:', finalResponse);
             const dataArr = finalResponse.points.map(point => point.payload.metadata.title ?  point.payload.metadata.title : point.payload.metadata.source)
+            console.log(dataArr);
             setData(dataArr);
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -60,7 +60,9 @@ function LearningIndex() {
                     </div>
                 ) : (
                     data && data.map((item, index) => (
-                        <div key={index} className="data-item">{item}</div>
+                        <div key={index} className="data-item">
+                            {item}
+                        </div>
                     ))
                 )} 
             </div>
