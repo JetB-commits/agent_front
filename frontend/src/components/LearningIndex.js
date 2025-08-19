@@ -25,10 +25,18 @@ function LearningIndex() {
             });
 
             const finalResponse = await response.json();
-            const dataArr = finalResponse.points.map(point => ({
-                sourceTitle: point.payload.metadata.title ? point.payload.metadata.title : point.payload.metadata.source,
-                sourceType: point.payload.metadata.type
-            }));
+            const dataArr = finalResponse.points.map(point => {
+                const meta = point?.payload?.metadata || {};
+                const item = {
+                    sourceTitle: meta.title ? meta.title : meta.source,
+                    sourceType: meta.type
+                };
+                if (meta.type === 'url') {
+                    item.sourceUrl = meta.source;
+                }
+                return item;
+            });
+
             console.log(dataArr);
             setData(dataArr);
         } catch (error) {
@@ -66,6 +74,11 @@ function LearningIndex() {
                         <div key={index} className="data-item">
                             <div className="data-item-title">{item.sourceTitle}</div>
                             {item.sourceType && <div className="data-item-type">{item.sourceType}</div>}
+                            {item.sourceUrl && (
+                                <div className="data-item-url">
+                                    <a href={item.sourceUrl} target="_blank" rel="noreferrer nofollow">{item.sourceUrl}</a>
+                                </div>
+                            )}
                         </div>
                     ))
                 )} 
