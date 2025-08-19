@@ -70,7 +70,7 @@ function AzureChat() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           question: currentInput,
-          user_id: '1'
+          user_id: 7
         }),
       });
 

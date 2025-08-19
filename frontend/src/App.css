@@ -513,6 +513,7 @@ body {
   background: linear-gradient(135deg, rgba(59,130,246,0.18), transparent 60%);
   opacity: 0;
   transition: opacity var(--transition);
+  z-index:-1;
 }
 
 .data-item:hover:before {
