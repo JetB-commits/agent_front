@@ -254,7 +254,7 @@ function Chat() {
             </div>
             {msg.source && msg.sender === 'bot' && (
               <div className="message-source">
-                <small>Source: {msg.source} ({msg.source_id})</small>
+                <small>情報源: {msg.source} ({msg.source_id})</small>
               </div>
             )}
           </div>
